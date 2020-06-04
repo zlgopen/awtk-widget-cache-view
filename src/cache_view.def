@@ -1,0 +1,6 @@
+LIBRARY   cache_view
+EXPORTS
+    cache_view_create @1
+    cache_view_cast @2
+    cache_view_set_update_interval @3
+    cache_view_register @4
