@@ -22,11 +22,14 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/time_now.h"
+#include "base/widget_vtable.h"
 
 #include "cache_view.h"
 #include "lcd/lcd_mem_bgr565.h"
 #include "lcd/lcd_mem_rgb565.h"
 #include "lcd/lcd_mem_rgba8888.h"
+
+static ret_t cache_view_reset_canvas(widget_t* widget);
 
 ret_t cache_view_set_update_interval(widget_t* widget, uint32_t update_interval) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
@@ -50,7 +53,6 @@ static ret_t cache_view_get_prop(widget_t* widget, const char* name, value_t* v)
 }
 
 static ret_t cache_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  cache_view_t* cache_view = CACHE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(CACHE_VIEW_PROP_UPDATE_INTERVAL, name)) {
@@ -135,6 +137,7 @@ static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
 
   cost = time_now_ms() - start;
   log_debug("update cost=%u\n", cost);
+  cache_view->last_update = time_now_ms();
 
   return RET_OK;
 }
