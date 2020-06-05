@@ -30,9 +30,11 @@ static ret_t on_close(void* ctx, event_t* e) {
 
 static ret_t on_disable(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
+  widget_t* check_button = WIDGET(e->target);
   widget_t* cache_view = widget_lookup_by_type(win, WIDGET_TYPE_CACHE_VIEW, TRUE);
-  
-  widget_set_enable(cache_view, FALSE);
+  bool_t enable = !widget_get_value(check_button);
+
+  widget_set_enable(cache_view, enable);
 
   return RET_OK;
 }
@@ -44,8 +46,8 @@ ret_t application_init() {
 
   win = window_open("main");
   window_manager_set_show_fps(window_manager(), TRUE);
-  widget_child_on(win, "close", EVT_CLICK, on_close, win); 
-  widget_child_on(win, "disable", EVT_CLICK, on_disable, win); 
+  widget_child_on(win, "close", EVT_CLICK, on_close, win);
+  widget_child_on(win, "disable", EVT_CLICK, on_disable, win);
 
   return RET_OK;
 }
@@ -55,4 +57,3 @@ ret_t application_exit() {
 }
 
 #include "awtk_main.inc"
-

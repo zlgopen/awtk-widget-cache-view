@@ -19,6 +19,6 @@
         animation="value(from=-128, to=128, yoyo_times=1000, duration=3000)"/>
   </guage>
   
-  <button x="c:-60" y="b:30" w="80" h="30" name="disable" text="Disable"/>
+  <check_button x="10" y="b:30" w="80" h="30" name="disable" text="Disable Cache"/>
   <button x="c:60" y="b:30" w="80" h="30" name="close" text="Close"/>
 </window>
