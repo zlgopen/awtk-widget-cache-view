@@ -163,7 +163,7 @@ static ret_t cache_view_ensure_canvas(widget_t* widget, canvas_t* c) {
 static ret_t cache_view_on_paint_children(widget_t* widget, canvas_t* c) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
 
-  if (c->lcd->ratio == 1 && cache_view->disable_cache) {
+  if (c->lcd->ratio == 1 && !(cache_view->disable_cache)) {
     uint32_t cost = 0;
     uint64_t start = time_now_ms();
     return_value_if_fail(cache_view_ensure_canvas(widget, c) == RET_OK, RET_FAIL);
