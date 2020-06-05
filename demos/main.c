@@ -32,9 +32,9 @@ static ret_t on_disable(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   widget_t* check_button = WIDGET(e->target);
   widget_t* cache_view = widget_lookup_by_type(win, WIDGET_TYPE_CACHE_VIEW, TRUE);
-  bool_t enable = !widget_get_value(check_button);
+  bool_t disable = !widget_get_value(check_button);
 
-  widget_set_enable(cache_view, enable);
+  CACHE_VIEW(cache_view)->disable_cache = disable;
 
   return RET_OK;
 }

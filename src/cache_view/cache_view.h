@@ -37,9 +37,16 @@ typedef struct _cache_view_t {
   /**
    * @property {uint32_t} update_interval
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 更新缓存的时间间隔。。
+   * 更新缓存的时间间隔。
    */
   uint32_t update_interval;
+
+  /**
+   * @property {bool_t} disable_cache
+   * @annotation ["readable","writable"]
+   * 禁止缓存(主要用于对比测试)。
+   */
+  bool_t  disable_cache;
 
   /*private*/
   uint64_t last_update;
