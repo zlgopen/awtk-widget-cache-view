@@ -6,7 +6,7 @@ import shutil
 
 def getAwtkRoot():
   #for pc
-  awtk_root = 'e:/zlgopen/awtk_agge_rc'
+  awtk_root = '../awtk'
   #for linux-fb
   #awtk_root = '../awtk-linux-fb'
   return os.path.abspath(awtk_root)
