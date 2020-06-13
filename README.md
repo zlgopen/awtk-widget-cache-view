@@ -51,7 +51,6 @@ cache\_view 的大小一般指定为窗口一样大，并把窗口的背景设�
 git clone https://github.com/zlgopen/awtk.git
 cd awtk; scons; cd -
 ```
-
 2. 获取 awtk-widget-cache-view 并编译
 
 ```
@@ -61,10 +60,27 @@ cd awtk-widget-cache-view; scons;
 
 ## 运行
 
-> 需要把 awtk/bin 下的动态库拷贝到当前目录的 bin 中。
+1. 生成示例代码的资源
 
 ```
-./bin/demo_cache_view
+python scripts/update_res.py all
+```
+> 也可以使用 Designer 打开项目，之后点击 “打包” 按钮进行生成
+> 如果资源发生修改，则需要重新生成资源。
+
+
+2. 编译
+
+```
+scons
+```
+> 注意：
+> 编译前先确认 SConstruct 文件中的 awtk_root 是否为 awtk 所在目录，不是则修改。
+> 默认使用动态库的形式，如果需要使用静态库，修改 SConstruct 文件中的 BUILD_SHARED = 'false' 即可。
+
+3. 运行
+```
+./bin/demo
 ```
 
 ## 文档
