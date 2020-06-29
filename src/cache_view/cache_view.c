@@ -98,7 +98,7 @@ static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
   rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
 
-  if (cache_view->last_update != 0 &&
+  if (cache_view->last_update != 0 && cache_view->bitmap != NULL && 
       (cache_view->last_update + cache_view->update_interval) > start) {
     return RET_OK;
   }

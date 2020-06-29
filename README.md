@@ -1,6 +1,6 @@
-# awtk-widget-cache_view
+# awtk-widget-cache\_view
 
-cache_view 控件。将全部子控件绘制到一个 bitmap 中缓存起来，真正绘制时直接贴图，以提高绘制效率。
+cache\_view 控件。将全部子控件绘制到一个 bitmap 中缓存起来，真正绘制时直接贴图，以提高绘制效率。
 
 ## 介绍
 
@@ -8,11 +8,9 @@ cache_view 控件。将全部子控件绘制到一个 bitmap 中缓存起来，�
 
 在不支持脏矩形或脏矩形区域比较大的时候，我们可以把内容更新比较慢的控件放到 cache\_view 控件中，作为了 cache\_view 的子控件，cache\_view 把所有子控件绘制到一张 bitmap 中，并定期更新这个 bitmap。在每次渲染时 cache\_view 直接把 bitmap 上去，可大大提供渲染效率。
 
-cache\_view 会尽量保持 bitmap 的格式与 lcd 的格式一致，以便使用 memcpy 进行贴图，以达到最高效率。
-
 ## 使用方法：
 
-把经常更新的控件放到 cache\_view 中，并给 cache\_view 指定更新时间间隔 update_interval（毫秒）。
+把经常更新的控件放到 cache\_view 中，并给 cache\_view 指定更新时间间隔 update\_interval（毫秒）。
 
 cache\_view 的大小一般指定为窗口一样大，并把窗口的背景设置为 cache\_view 的背景，窗口不再指定背景，避免重复绘制。
 
@@ -40,7 +38,6 @@ cache\_view 的大小一般指定为窗口一样大，并把窗口的背景设�
 
 ## 局限
 
-* 目前不支持高清屏。
 * 缓存图片需要更多内存。
 
 ## 准备
