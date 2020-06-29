@@ -93,47 +93,23 @@ static ret_t cache_view_paint(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
-  canvas_t canvas;
-  lcd_t* lcd = NULL;
-  uint8_t* buff = NULL;
-  bitmap_t* bitmap = NULL;
   uint32_t cost = 0;
   uint64_t start = time_now_ms();
   cache_view_t* cache_view = CACHE_VIEW(widget);
-
-  return_value_if_fail(cache_view->bitmap != NULL, RET_BAD_PARAMS);
+  rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
 
   if (cache_view->last_update != 0 &&
       (cache_view->last_update + cache_view->update_interval) > start) {
     return RET_OK;
   }
 
-  bitmap = cache_view->bitmap;
-  buff = bitmap_lock_buffer_for_write(bitmap);
-  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
-
-  if (bitmap->format == BITMAP_FMT_RGBA8888) {
-    lcd = lcd_mem_rgba8888_create_single_fb(widget->w, widget->h, buff);
-  } else if (bitmap->format == BITMAP_FMT_BGR565) {
-    lcd = lcd_mem_bgr565_create_single_fb(widget->w, widget->h, buff);
-  } else {
-    lcd = lcd_mem_rgb565_create_single_fb(widget->w, widget->h, buff);
+  if (cache_view->bitmap != NULL) {
+    bitmap_destroy(cache_view->bitmap);
   }
 
-  if (lcd != NULL) {
-    canvas_init(&canvas, lcd, c->font_manager);
-    canvas_translate(&canvas, c->ox, c->oy);
-
-    canvas_begin_frame(&canvas, NULL, LCD_DRAW_OFFLINE);
-    cache_view_paint(widget, &canvas);
-    canvas_end_frame(&canvas);
-
-    bitmap->flags |= BITMAP_FLAG_CHANGED;
-
-    canvas_reset(&canvas);
-    lcd_destroy(lcd);
-  }
-  bitmap_unlock_buffer(bitmap);
+  cache_view->disable_cache = TRUE;
+  cache_view->bitmap = widget_take_snapshot_rect(widget, &r);
+  cache_view->disable_cache = FALSE;
 
   cost = time_now_ms() - start;
   log_debug("update cost=%u\n", cost);
@@ -142,37 +118,18 @@ static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t cache_view_ensure_canvas(widget_t* widget, canvas_t* c) {
-  cache_view_t* cache_view = CACHE_VIEW(widget);
-
-  if (cache_view->bitmap == NULL) {
-    uint32_t w = widget->w;
-    uint32_t h = widget->h;
-    bitmap_format_t format = lcd_get_desired_bitmap_format(c->lcd);
-    if (format != BITMAP_FMT_RGBA8888 && format != BITMAP_FMT_RGB565 &&
-        format != BITMAP_FMT_BGR565) {
-      format = BITMAP_FMT_BGR565;
-    }
-
-    cache_view->bitmap = bitmap_create_ex(w, h, 0, format);
-  }
-
-  return RET_OK;
-}
-
 static ret_t cache_view_on_paint_children(widget_t* widget, canvas_t* c) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
 
-  if (c->lcd->ratio == 1 && !(cache_view->disable_cache)) {
+  if (!(cache_view->disable_cache)) {
     uint32_t cost = 0;
     uint64_t start = time_now_ms();
-    return_value_if_fail(cache_view_ensure_canvas(widget, c) == RET_OK, RET_FAIL);
     return_value_if_fail(cache_view_update(widget, c) == RET_OK, RET_FAIL);
-
     canvas_draw_image_at(c, cache_view->bitmap, 0, 0);
     cost = time_now_ms() - start;
-
-    log_debug("cache view paint cost:%u\n", cost);
+    /*
+    * log_debug("cache view paint cost:%u\n", cost);
+    */
   } else {
     cache_view_paint(widget, c);
   }

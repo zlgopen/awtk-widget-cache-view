@@ -46,7 +46,7 @@ typedef struct _cache_view_t {
    * @annotation ["readable","writable"]
    * 禁止缓存(主要用于对比测试)。
    */
-  bool_t  disable_cache;
+  bool_t disable_cache;
 
   /*private*/
   uint64_t last_update;

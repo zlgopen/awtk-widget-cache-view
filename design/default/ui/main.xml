@@ -1,5 +1,5 @@
 <window theme="main">
-	<cache_view x="0" y="0" w="100%" h="100%" update_interval="300">
+	<cache_view x="0" y="0" w="100%" h="100%" update_interval="3000">
 		<image x="0" y="0" w="100%" h="50%" image="logo" rotation="0" />
 		<image x="0" y="0" w="100%" h="50%" image="logo" rotation="1" />
 		<image x="0" y="0" w="100%" h="50%" image="logo" rotation="2" />
