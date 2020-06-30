@@ -101,7 +101,7 @@
     "properties": [
       {
         "name": "update_interval",
-        "desc": "更新缓存的时间间隔。。",
+        "desc": "更新缓存的时间间隔。",
         "type": "uint32_t",
         "annotation": {
           "set_prop": true,
@@ -110,6 +110,15 @@
           "persitent": true,
           "design": true,
           "scriptable": true
+        }
+      },
+      {
+        "name": "disable_cache",
+        "desc": "禁止缓存(主要用于对比测试)。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
         }
       }
     ],
