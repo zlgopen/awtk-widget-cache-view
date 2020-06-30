@@ -125,7 +125,7 @@ static ret_t cache_view_on_paint_children(widget_t* widget, canvas_t* c) {
     uint32_t cost = 0;
     uint64_t start = time_now_ms();
     return_value_if_fail(cache_view_update(widget, c) == RET_OK, RET_FAIL);
-    canvas_draw_image_at(c, cache_view->bitmap, 0, 0);
+    canvas_draw_image_at(c, cache_view->bitmap, c->ox, c->oy);
     cost = time_now_ms() - start;
     /*
     * log_debug("cache view paint cost:%u\n", cost);
