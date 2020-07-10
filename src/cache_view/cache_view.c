@@ -67,6 +67,7 @@ static ret_t cache_view_on_destroy(widget_t* widget) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
   return_value_if_fail(widget != NULL && cache_view != NULL, RET_BAD_PARAMS);
 
+  idle_remove(cache_view->idle_update_id);
   cache_view_reset_canvas(widget);
 
   return RET_OK;
@@ -92,13 +93,13 @@ static ret_t cache_view_paint(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
+static ret_t cache_view_update(widget_t* widget) {
   uint32_t cost = 0;
   uint64_t start = time_now_ms();
   cache_view_t* cache_view = CACHE_VIEW(widget);
-  rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
 
-  if (cache_view->last_update != 0 && cache_view->bitmap != NULL && 
+  if (cache_view->last_update != 0 && cache_view->bitmap != NULL &&
       (cache_view->last_update + cache_view->update_interval) > start) {
     return RET_OK;
   }
@@ -118,13 +119,19 @@ static ret_t cache_view_update(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t cache_view_on_idle_update(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  cache_view_update(widget);
+  return RET_REPEAT;
+}
+
 static ret_t cache_view_on_paint_children(widget_t* widget, canvas_t* c) {
   cache_view_t* cache_view = CACHE_VIEW(widget);
 
-  if (!(cache_view->disable_cache)) {
+  if (!(cache_view->disable_cache) && cache_view->bitmap != NULL) {
     uint32_t cost = 0;
     uint64_t start = time_now_ms();
-    return_value_if_fail(cache_view_update(widget, c) == RET_OK, RET_FAIL);
+
     canvas_draw_image_at(c, cache_view->bitmap, c->ox, c->oy);
     cost = time_now_ms() - start;
     /*
@@ -171,7 +178,7 @@ widget_t* cache_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(cache_view != NULL, NULL);
 
   cache_view->update_interval = 200;
-
+  cache_view->idle_update_id = idle_add(cache_view_on_idle_update, widget);
   return widget;
 }
 

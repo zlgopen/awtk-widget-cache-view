@@ -51,6 +51,7 @@ typedef struct _cache_view_t {
   /*private*/
   uint64_t last_update;
   bitmap_t* bitmap;
+  uint32_t idle_update_id;
 } cache_view_t;
 
 /**
