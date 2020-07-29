@@ -89,16 +89,6 @@ widget_t* cache_view_cast(widget_t* widget);
  */
 ret_t cache_view_set_update_interval(widget_t* widget, uint32_t update_interval);
 
-/**
- * @method  cache_view_register
- * 注册控件。
- *
- * @annotation ["scriptable", "static"]
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t cache_view_register(void);
-
 #define CACHE_VIEW_PROP_UPDATE_INTERVAL "update_interval"
 
 #define WIDGET_TYPE_CACHE_VIEW "cache_view"
