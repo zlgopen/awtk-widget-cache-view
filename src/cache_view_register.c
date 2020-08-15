@@ -28,3 +28,7 @@
 ret_t cache_view_register(void) {
   return widget_factory_register(widget_factory(), WIDGET_TYPE_CACHE_VIEW, cache_view_create);
 }
+
+const char* cache_view_supported_render_mode(void) {
+  return "OpenGL|AGGE-BGR565|AGGE-BGRA8888";
+}
