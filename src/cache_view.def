@@ -1,7 +1,7 @@
 LIBRARY   cache_view
 EXPORTS
-    cache_view_register @1
-    cache_view_supported_render_mode @2
-    cache_view_create @3
-    cache_view_cast @4
-    cache_view_set_update_interval @5
+    cache_view_register
+    cache_view_supported_render_mode
+    cache_view_create
+    cache_view_cast
+    cache_view_set_update_interval
