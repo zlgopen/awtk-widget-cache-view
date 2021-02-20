@@ -1,5 +1,6 @@
 ﻿#include "awtk.h"
 #include "cache_view/cache_view.h"
+#include "cache_view_register.h"
 
 static ret_t on_close(void* ctx, event_t* e) {
   tk_quit();
